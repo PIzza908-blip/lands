@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>анкеты</title>
+    <style>
+        @keyframes neon-glow {
+            0% { color: #0ff; text-shadow: 0 0 10px #0ff; }
+            25% { color: #ff00ff; text-shadow: 0 0 10px #ff00ff; }
+            50% { color: #ff0000; text-shadow: 0 0 10px #ff0000; }
+            75% { color: #ff9900; text-shadow: 0 0 10px #ff9900; }
+            100% { color: #0ff; text-shadow: 0 0 10px #0ff; }
+        }
+        @keyframes button-glow {
+            0% { box-shadow: 0 0 5px #0ff; }
+            50% { box-shadow: 0 0 20px #0ff; }
+            100% { box-shadow: 0 0 5px #0ff; }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @keyframes move-glow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .glow-container {
+            position: relative;
+            padding: 20px;
+            border: 4px solid #0ff;
+            box-shadow: 0 0 20px #0ff;
+            width: 400px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            text-align: center;
+        }
+        .glow-text {
+            font-size: 24px;
+            animation: neon-glow 3s infinite alternate;
+        }
+        .scroll-container {
+            width: 400px;
+            height: 200px;
+            margin-top: 20px;
+            overflow-y: auto;
+            border: 2px solid #0ff;
+            padding: 10px;
+            box-shadow: 0 0 10px #0ff;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+        }
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #0ff;
+        }
+        .neon-btn {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 10px 0;
+            border: none;
+            font-size: 16px;
+            color: white;
+            font-weight: bold;
+            background: linear-gradient(90deg, #ff00ff, #0ff, #ff9900);
+            background-size: 200% 200%;
+            animation: move-glow 3s infinite linear, pulse 2s infinite alternate;
+            border-radius: 8px;
+            transition: 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .neon-btn:hover {
+            background: linear-gradient(90deg, #ff9900, #0ff, #ff00ff);
+            box-shadow: 0 0 25px #0ff;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <video autoplay loop muted playsinline class="video-bg">
+        <source src="https://cdn.pixabay.com/video/2022/02/10/107303-676158761_large.mp4" type="video/mp4">
+    </video>
+
+    <div class="glow-container">
+        <h1 class="glow-text">Заполни анкету и стань частью будущего</h1>
+        <form id="form">
+            <input type="text" id="name" placeholder="Твоё имя" required>
+            <input type="email" id="email" placeholder="Твой email" required>
+            <button type="submit" class="neon-btn">Отправить</button>
+        </form>
+    </div>
+
+    <div class="scroll-container">
+        <h3>Анкеты:</h3>
+        <ul id="list"></ul>
+    </div>
+
+    <script>
+        document.getElementById("form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+
+            let listItem = document.createElement("li");
+            listItem.className = "list-item";
+            listItem.innerHTML = `<span>${name} - ${email}</span>
+                <button class="neon-btn">✅</button>
+                <button class="neon-btn">❌</button>`;
+
+            document.getElementById("list").appendChild(listItem);
+
+            listItem.querySelector(".neon-btn:nth-child(2)").addEventListener("click", function() {
+                listItem.style.color = "lightgreen";
+            });
+
+            listItem.querySelector(".neon-btn:nth-child(3)").addEventListener("click", function() {
+                listItem.remove();
+            });
+
+            document.getElementById("form").reset();
+        });
+    </script>
+</body>
+</html>
